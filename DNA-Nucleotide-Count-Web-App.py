@@ -12,18 +12,21 @@ import numpy as np
 import altair as alt
 # for importing images
 from PIL import Image
+import requests
+from io import BytesIO
 
-
-
-image = Image.open(https://github.com/rasoul1234/DNA-Nucleotide-Count-Web-App/blob/main/DNA.png)
-st.image(image, use_container_width =True)
+# Load image from URL
+url = "https://raw.githubusercontent.com/rasoul1234/DNA-Nucleotide-Count-Web-App/main/DNA.png"
+response = requests.get(url)
+image = Image.open(BytesIO(response.content))
+st.image(image, use_container_width=True)
 
 st.write("""
         # DNA Nucleotide Count Web App
-        This app counts the necleotide composition of query DNA!
+        This app counts the nucleotide composition of query DNA!
         ***
          """)
-         
+
 st.header('Enter DNA Sequence')   
 sequence_input = "DNA> Query \nGACATGGGAGGGGGTTTTAAAAGGTTTAAAACCCCCGACATGGGAGGGGGTTTTAAAAGGTTTAAAACCCCCGAC\nATGGGAGGGGGTTTTAAAAGGTTTAAAACCCCC"    
 sequence = st.text_area('Sequence input', sequence_input, height=250)  
@@ -37,7 +40,7 @@ st.write('***')
 st.header('Input (DNA Query)')
 sequence
 
-# DNA necleotide Count
+# DNA nucleotide Count
 st.header("OUTPUT (DNA Nucleotide Count)")
 # 1. Print dictionary
 st.subheader('1. Print Dictionary')
@@ -47,7 +50,7 @@ def DNA_nucleotide_count(seq):
         ('T', seq.count('T')),
         ('G', seq.count('G')),
         ('C', seq.count('C'))
-        ])
+    ])
     return d
 
 x = DNA_nucleotide_count(sequence)
@@ -58,25 +61,25 @@ x
 # 2. Print text
 st.subheader('2. Print text')
 st.write('There are '+ str(x['A'])+ ' adenine (A)')
-st.write('There are '+ str(x['T'])+ ' thymine (A)')
-st.write('There are '+ str(x['G'])+ ' adenine (guanine)')
-st.write('There are '+ str(x['C'])+ ' thymine (cytosine)')
+st.write('There are '+ str(x['T'])+ ' thymine (T)')
+st.write('There are '+ str(x['G'])+ ' guanine (G)')
+st.write('There are '+ str(x['C'])+ ' cytosine (C)')
 
 # 3. Display the Data Frame
 st.subheader('3. Display DataFrame')
 df = pd.DataFrame.from_dict(x, orient='index')
 df = df.rename({0 : 'count'}, axis='columns')
-df.reset_index(inplace = True)
+df.reset_index(inplace=True)
 df = df.rename(columns={'index':'nucleotide'})
 st.write(df)
 
-# 4. Display Bar Chart Using ALtair
+# 4. Display Bar Chart Using Altair
 st.subheader('4. Display Bar Chart')
 p = alt.Chart(df).mark_bar().encode(
-    x = 'nucleotide',
-    y = 'count'
-    )
+    x='nucleotide',
+    y='count'
+)
 p = p.properties(
-    width = alt.Step(80)
-    )
+    width=alt.Step(80)
+)
 st.write(p)
