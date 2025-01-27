@@ -15,7 +15,7 @@ from PIL import Image
 
 
 
-image = Image.open('C:/Users/Muhammad Rasoul/Desktop/Streamlit_Project/DNA.png')
+image = Image.open('https://github.com/rasoul1234/DNA-Nucleotide-Count-Web-App/blob/main/DNA.png')
 st.image(image, use_container_width =True)
 
 st.write("""
